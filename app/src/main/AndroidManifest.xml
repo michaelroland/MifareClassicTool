@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+** Copyright (C) 2016  Michael Roland <mi.roland@gmail.com>
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+-->
+<manifest package="at.mroland.android.mifareclassictool"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_SUPERUSER" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name">
+            <intent-filter android:label="@string/app_name_launcher">
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.LaunchSettingsActivity"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.mroland.android.mifareclassictool.activities.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".activities.FilePickerActivity"
+            android:theme="@style/FilePickerTheme" />
+        <activity
+            android:name=".activities.EditorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/name_editor">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.mroland.android.mifareclassictool.activities.MainActivity"/>
+        </activity>
+    </application>
+
+</manifest>

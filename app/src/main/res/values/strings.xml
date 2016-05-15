@@ -1,0 +1,64 @@
+<!--
+** Copyright (C) 2016  Michael Roland <mi.roland@gmail.com>
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+-->
+<resources>
+    <string name="app_name">Mifare Classic Tool</string>
+    <string name="app_name_launcher">MF Classic Tool</string>
+    <string name="command_mfoc">mfoc: Key recovery (>= 1 known key)</string>
+    <string name="command_mfcuk">mfcuk: Key recovery (no known key)</string>
+    <string name="command_write_clone">Write: Dump to clone card</string>
+    <string name="command_nfc_list">nfc-list</string>
+    <string name="command_stop_command">Stop command execution</string>
+    <string name="title_activity_mfoc_settings">mfoc</string>
+    <string name="output_dump_file">Card dump output file</string>
+    <string name="input_dump_file">Card dump input file</string>
+    <string name="input_key_file">Key input file</string>
+    <string name="known_keys">Known keys</string>
+    <string name="mfoc_probes">Number of probes per sector</string>
+    <string name="pref_mfoc_probes_default">150</string>
+    <string name="mfoc_tolerance">Nonce tolerance half-range</string>
+    <string name="pref_mfoc_tolerance_default">20</string>
+    <string name="launch_mfoc">Start mfoc...</string>
+    <string name="file_path">Path</string>
+    <string name="file_name">File name</string>
+    <string name="keys">Keys</string>
+    <string name="advanced_settings">Advanced settings</string>
+    <string name="launch_mfcuk">Launch mfcuk...</string>
+    <string name="mfcuk_sleep_field_off">SLEEP_AT_FIELD_OFF (in ms)</string>
+    <string name="pref_mfcuk_sleep_field_off_default">10</string>
+    <string name="pref_mfcuk_sleep_field_on_default">50</string>
+    <string name="mfcuk_sleep_field_on">SLEEP_AFTER_FIELD_ON (in ms)</string>
+    <string name="pref_mfcuk_recover_sector_default">0</string>
+    <string name="pref_mfcuk_recover_keytype_default">A</string>
+    <string name="mfcuk_recover_keytype">Key-type</string>
+    <string name="mfcuk_recover_sector">Sector</string>
+    <string name="recovery_settings">Recovery target key(s)</string>
+    <string name="launch_nfc_mfclassic">Launch nfc-mfclassic...</string>
+    <string name="clone_target">Clone target</string>
+    <string name="clone_target_chinese">Chinese clone card</string>
+    <string name="write_clone_keytype">Use key-type</string>
+    <string name="pref_write_clone_keytype_default">A</string>
+    <string name="menu_open_file">Open file...</string>
+    <string name="menu_save_file">Save file</string>
+    <string name="menu_save_file_as">Save file as...</string>
+    <string name="name_editor">Hex Editor</string>
+    <string name="menu_hex_editor">Start Hex Editor...</string>
+    <string name="toast_save_complete">Data saved as %s.</string>
+    <string name="toast_save_failed">Failed to save to %s!</string>
+    <string name="toast_open_failed">Failed to open %s!</string>
+    <string name="toast_open_complete">Opened %s.</string>
+</resources>

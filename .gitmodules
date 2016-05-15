@@ -1,0 +1,15 @@
+[submodule "app/src/main/jni/libusb01"]
+	path = app/src/main/jni/libusb01
+	url = https://github.com/michaelroland/libusb-0.1-android.git
+[submodule "app/src/main/jni/libnfc"]
+	path = app/src/main/jni/libnfc
+	url = https://github.com/michaelroland/libnfc-android.git
+[submodule "app/src/main/jni/mfcuk"]
+	path = app/src/main/jni/mfcuk
+	url = https://github.com/michaelroland/mfcuk-android.git
+[submodule "app/src/main/jni/mfoc"]
+	path = app/src/main/jni/mfoc
+	url = https://github.com/michaelroland/mfoc-android.git
+[submodule "nna-filepicker"]
+	path = nna-filepicker
+	url = https://github.com/michaelroland/nna-filepicker.git

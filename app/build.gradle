@@ -1,0 +1,114 @@
+/*
+** Copyright (C) 2013-2016  Michael Roland <mi.roland@gmail.com>
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+*/
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "at.mroland.android.mifareclassictool"
+        minSdkVersion 18
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets.main {
+        jni.srcDirs = []
+        jniLibs.srcDir 'src/main/libs'
+    }
+
+    task ndkBuild(type: Exec) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def ndkdir = properties.getProperty('ndk.dir', null)
+        if (ndkdir == null)
+            throw new GradleException("NDK location not found. Define location with ndk.dir in the local.properties file or with an ANDROID_NDK_ROOT environment variable.")
+
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine ndkdir + '/ndk-build.cmd', '-C', file('src/main').absolutePath, 'all'
+        } else {
+            commandLine ndkdir + '/ndk-build', '-C', file('src/main').absolutePath, 'all'
+        }
+    }
+
+    task ndkCopyExecutables(type: Copy) {
+        dependsOn ndkBuild
+        from 'src/main/libs'
+        into 'src/main/libs'
+        include '**/*'
+        exclude '**/*.so'
+        exclude '**/*.jar'
+        rename '(.+)', 'libex-$1.exe.so'
+    }
+
+    task ndkBuildAll {
+        dependsOn ndkBuild
+        dependsOn ndkCopyExecutables
+    }
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn ndkBuildAll
+    }
+
+    task ndkClean(type: Exec) {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+        def ndkdir = properties.getProperty('ndk.dir', null)
+        if (ndkdir == null)
+            throw new GradleException("NDK location not found. Define location with ndk.dir in the local.properties file or with an ANDROID_NDK_ROOT environment variable.")
+
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine ndkdir + '/ndk-build.cmd', '-C', file('src/main').absolutePath, 'clean'
+        } else {
+            commandLine ndkdir + '/ndk-build', '-C', file('src/main').absolutePath, 'clean'
+        }
+    }
+
+    task ndkCleanDirectory(type: Delete) {
+        dependsOn ndkClean
+        delete 'src/main/libs'
+        delete 'src/main/obj'
+    }
+
+    task ndkCleanAll {
+        dependsOn ndkClean
+        dependsOn ndkCleanDirectory
+    }
+
+    clean.dependsOn ndkCleanAll
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile project(':nna-filepicker')
+}

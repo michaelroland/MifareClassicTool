@@ -1,0 +1,87 @@
+<!--
+** Copyright (C) 2016  Michael Roland <mi.roland@gmail.com>
+**
+** This program is free software: you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation, either version 3 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/command_mfcuk">
+
+        <Preference
+            android:key="launch_mfcuk"
+            android:defaultValue=""
+            android:selectAllOnFocus="true"
+            android:title="@string/launch_mfcuk"
+            android:icon="@android:drawable/ic_menu_set_as" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/output_dump_file">
+
+        <Preference
+            android:key="mfcuk_output_file_path"
+            android:defaultValue=""
+            android:selectAllOnFocus="true"
+            android:title="@string/file_path" />
+
+        <EditTextPreference
+            android:key="mfcuk_output_file_name"
+            android:defaultValue=""
+            android:selectAllOnFocus="true"
+            android:title="@string/file_name" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/recovery_settings">
+
+        <ListPreference
+            android:key="mfcuk_recover_sector"
+            android:entries="@array/pref_mfcuk_recover_sector_names"
+            android:entryValues="@array/pref_mfcuk_recover_sectors"
+            android:defaultValue="@string/pref_mfcuk_recover_sector_default"
+            android:title="@string/mfcuk_recover_sector" />
+
+        <ListPreference
+            android:key="mfcuk_recover_keytype"
+            android:entries="@array/pref_mfcuk_recover_keytype_names"
+            android:entryValues="@array/pref_mfcuk_recover_keytypes"
+            android:defaultValue="@string/pref_mfcuk_recover_keytype_default"
+            android:title="@string/mfcuk_recover_keytype" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/advanced_settings">
+
+        <ListPreference
+            android:key="mfcuk_sleep_field_off"
+            android:entries="@array/pref_mfcuk_sleep_field_off_names"
+            android:entryValues="@array/pref_mfcuk_sleep_field_off"
+            android:defaultValue="@string/pref_mfcuk_sleep_field_off_default"
+            android:title="@string/mfcuk_sleep_field_off" />
+
+        <ListPreference
+            android:key="mfcuk_sleep_field_on"
+            android:entries="@array/pref_mfcuk_sleep_field_on_names"
+            android:entryValues="@array/pref_mfcuk_sleep_field_on"
+            android:defaultValue="@string/pref_mfcuk_sleep_field_on_default"
+            android:title="@string/mfcuk_sleep_field_on" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -144,19 +144,21 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_launch_mfoc);
 
-            bindPreferenceSummaryToValue(findPreference("mfoc_output_file_path"));
-            bindPreferenceSummaryToValue(findPreference("mfoc_output_file_name"));
+            bindPreferenceSummaryToValue(findPreference("mfoc_output_file"));
             bindPreferenceSummaryToValue(findPreference("known_keys"));
             bindPreferenceSummaryToValue(findPreference("mfoc_probes"));
             bindPreferenceSummaryToValue(findPreference("mfoc_tolerance"));
 
-            findPreference("mfoc_output_file_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("mfoc_output_file").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_EXISTING_FILE, true);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE_AND_DIR | FilePickerActivity.MODE_WRITABLE);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE |
+                                                                       FilePickerActivity.MODE_NEW_FILE |
+                                                                       FilePickerActivity.MODE_WRITABLE);
                     File extFilesDir = getActivity().getExternalFilesDir(null);
                     if (extFilesDir != null) {
                         filePicker.putExtra(FilePickerActivity.EXTRA_BASE_PATHS, new String[]{
@@ -170,15 +172,15 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
                                 Environment.getExternalStorageDirectory().getAbsolutePath(),
                                 });
                     }
-                    String filePath = preference.getSharedPreferences().getString(preference.getKey(), null);
-                    if ((filePath == null) || filePath.isEmpty()) {
+                    String fileName = preference.getSharedPreferences().getString(preference.getKey(), null);
+                    if ((fileName == null) || fileName.isEmpty()) {
                         if (extFilesDir != null) {
-                            filePath = extFilesDir.getAbsolutePath();
+                            fileName = extFilesDir.getAbsolutePath();
                         } else {
-                            filePath = getActivity().getFilesDir().getAbsolutePath();
+                            fileName = getActivity().getFilesDir().getAbsolutePath();
                         }
                     }
-                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, fileName);
                     startActivityForResult(filePicker, RESULT_OUTPUT_PATH);
                     return true;
                 }
@@ -200,21 +202,11 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             switch (requestCode) {
                 case RESULT_OUTPUT_PATH:
                     if (resultCode == FilePickerActivity.RESULT_OK) {
-                        Preference filePath = findPreference("mfoc_output_file_path");
-                        Preference fileName = findPreference("mfoc_output_file_name");
+                        Preference fileName = findPreference("mfoc_output_file");
                         File file = new File(data.getData().getPath());
-                        if (file.isDirectory()) {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
-                        } else {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getParentFile().getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
+                        if (!file.isDirectory()) {
                             if (fileName != null) {
-                                fileName.getSharedPreferences().edit().putString(fileName.getKey(), file.getName()).apply();
+                                fileName.getEditor().putString(fileName.getKey(), file.getAbsolutePath()).apply();
                                 updatePreference(fileName);
                             }
                         }
@@ -233,20 +225,22 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_launch_mfcuk);
 
-            bindPreferenceSummaryToValue(findPreference("mfcuk_output_file_path"));
-            bindPreferenceSummaryToValue(findPreference("mfcuk_output_file_name"));
+            bindPreferenceSummaryToValue(findPreference("mfcuk_output_file"));
             bindPreferenceSummaryToValue(findPreference("mfcuk_recover_sector"));
             bindPreferenceSummaryToValue(findPreference("mfcuk_recover_keytype"));
             bindPreferenceSummaryToValue(findPreference("mfcuk_sleep_field_off"));
             bindPreferenceSummaryToValue(findPreference("mfcuk_sleep_field_on"));
 
-            findPreference("mfcuk_output_file_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("mfcuk_output_file").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_EXISTING_FILE, true);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE_AND_DIR | FilePickerActivity.MODE_WRITABLE);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE |
+                                                                       FilePickerActivity.MODE_NEW_FILE |
+                                                                       FilePickerActivity.MODE_WRITABLE);
                     File extFilesDir = getActivity().getExternalFilesDir(null);
                     if (extFilesDir != null) {
                         filePicker.putExtra(FilePickerActivity.EXTRA_BASE_PATHS, new String[]{
@@ -260,15 +254,15 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
                                 Environment.getExternalStorageDirectory().getAbsolutePath(),
                                 });
                     }
-                    String filePath = preference.getSharedPreferences().getString(preference.getKey(), null);
-                    if ((filePath == null) || filePath.isEmpty()) {
+                    String fileName = preference.getSharedPreferences().getString(preference.getKey(), null);
+                    if ((fileName == null) || fileName.isEmpty()) {
                         if (extFilesDir != null) {
-                            filePath = extFilesDir.getAbsolutePath();
+                            fileName = extFilesDir.getAbsolutePath();
                         } else {
-                            filePath = getActivity().getFilesDir().getAbsolutePath();
+                            fileName = getActivity().getFilesDir().getAbsolutePath();
                         }
                     }
-                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, fileName);
                     startActivityForResult(filePicker, RESULT_OUTPUT_PATH);
                     return true;
                 }
@@ -290,21 +284,11 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             switch (requestCode) {
                 case RESULT_OUTPUT_PATH:
                     if (resultCode == FilePickerActivity.RESULT_OK) {
-                        Preference filePath = findPreference("mfcuk_output_file_path");
-                        Preference fileName = findPreference("mfcuk_output_file_name");
+                        Preference fileName = findPreference("mfcuk_output_file");
                         File file = new File(data.getData().getPath());
-                        if (file.isDirectory()) {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
-                        } else {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getParentFile().getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
+                        if (!file.isDirectory()) {
                             if (fileName != null) {
-                                fileName.getSharedPreferences().edit().putString(fileName.getKey(), file.getName()).apply();
+                                fileName.getEditor().putString(fileName.getKey(), file.getAbsolutePath()).apply();
                                 updatePreference(fileName);
                             }
                         }
@@ -323,16 +307,17 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_launch_write_clone);
 
-            bindPreferenceSummaryToValue(findPreference("clone_input_file_path"));
-            bindPreferenceSummaryToValue(findPreference("clone_input_file_name"));
+            bindPreferenceSummaryToValue(findPreference("clone_input_file"));
 
-            findPreference("clone_input_file_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("clone_input_file").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_EXISTING_FILE, true);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE | FilePickerActivity.MODE_WRITABLE);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE |
+                                                                       FilePickerActivity.MODE_WRITABLE);
                     File extFilesDir = getActivity().getExternalFilesDir(null);
                     if (extFilesDir != null) {
                         filePicker.putExtra(FilePickerActivity.EXTRA_BASE_PATHS, new String[]{
@@ -346,36 +331,29 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
                                 Environment.getExternalStorageDirectory().getAbsolutePath(),
                                 });
                     }
-                    String filePath = preference.getSharedPreferences().getString(preference.getKey(), null);
-                    if ((filePath == null) || filePath.isEmpty()) {
+                    String fileName = preference.getSharedPreferences().getString(preference.getKey(), null);
+                    if ((fileName == null) || fileName.isEmpty()) {
                         if (extFilesDir != null) {
-                            filePath = extFilesDir.getAbsolutePath();
+                            fileName = extFilesDir.getAbsolutePath();
                         } else {
-                            filePath = getActivity().getFilesDir().getAbsolutePath();
+                            fileName = getActivity().getFilesDir().getAbsolutePath();
                         }
                     }
-                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, fileName);
                     startActivityForResult(filePicker, RESULT_INPUT_PATH);
                     return true;
                 }
             });
-            findPreference("clone_input_file_name").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Preference pathPref = findPreference("clone_input_file_path");
-                    return (pathPref != null) &&
-                           pathPref.getOnPreferenceClickListener().onPreferenceClick(pathPref);
 
-                }
-            });
-
-            findPreference("key_input_file_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            findPreference("key_input_file").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent filePicker = new Intent(getActivity(), FilePickerActivity.class);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_EXISTING_FILE, true);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                     filePicker.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
-                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE | FilePickerActivity.MODE_WRITABLE);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE |
+                                                                       FilePickerActivity.MODE_WRITABLE);
                     File extFilesDir = getActivity().getExternalFilesDir(null);
                     if (extFilesDir != null) {
                         filePicker.putExtra(FilePickerActivity.EXTRA_BASE_PATHS, new String[]{
@@ -389,26 +367,17 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
                                 Environment.getExternalStorageDirectory().getAbsolutePath(),
                                 });
                     }
-                    String filePath = preference.getSharedPreferences().getString(preference.getKey(), null);
-                    if ((filePath == null) || filePath.isEmpty()) {
+                    String fileName = preference.getSharedPreferences().getString(preference.getKey(), null);
+                    if ((fileName == null) || fileName.isEmpty()) {
                         if (extFilesDir != null) {
-                            filePath = extFilesDir.getAbsolutePath();
+                            fileName = extFilesDir.getAbsolutePath();
                         } else {
-                            filePath = getActivity().getFilesDir().getAbsolutePath();
+                            fileName = getActivity().getFilesDir().getAbsolutePath();
                         }
                     }
-                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, filePath);
+                    filePicker.putExtra(FilePickerActivity.EXTRA_START_PATH, fileName);
                     startActivityForResult(filePicker, RESULT_INPUT2_PATH);
                     return true;
-                }
-            });
-            findPreference("key_input_file_name").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    Preference pathPref = findPreference("key_input_file_path");
-                    return (pathPref != null) &&
-                           pathPref.getOnPreferenceClickListener().onPreferenceClick(pathPref);
-
                 }
             });
 
@@ -428,21 +397,11 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
             switch (requestCode) {
                 case RESULT_INPUT_PATH:
                     if (resultCode == FilePickerActivity.RESULT_OK) {
-                        Preference filePath = findPreference("clone_input_file_path");
-                        Preference fileName = findPreference("clone_input_file_name");
+                        Preference fileName = findPreference("clone_input_file");
                         File file = new File(data.getData().getPath());
-                        if (file.isDirectory()) {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
-                        } else {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getParentFile().getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
+                        if (!file.isDirectory()) {
                             if (fileName != null) {
-                                fileName.getSharedPreferences().edit().putString(fileName.getKey(), file.getName()).apply();
+                                fileName.getEditor().putString(fileName.getKey(), file.getAbsolutePath()).apply();
                                 updatePreference(fileName);
                             }
                         }
@@ -451,21 +410,11 @@ public class LaunchSettingsActivity extends AppCompatPreferenceActivity {
 
                 case RESULT_INPUT2_PATH:
                     if (resultCode == FilePickerActivity.RESULT_OK) {
-                        Preference filePath = findPreference("key_input_file_path");
-                        Preference fileName = findPreference("key_input_file_name");
+                        Preference fileName = findPreference("key_input_file");
                         File file = new File(data.getData().getPath());
-                        if (file.isDirectory()) {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
-                        } else {
-                            if (filePath != null) {
-                                filePath.getSharedPreferences().edit().putString(filePath.getKey(), file.getParentFile().getAbsolutePath()).apply();
-                                updatePreference(filePath);
-                            }
+                        if (!file.isDirectory()) {
                             if (fileName != null) {
-                                fileName.getSharedPreferences().edit().putString(fileName.getKey(), file.getName()).apply();
+                                fileName.getEditor().putString(fileName.getKey(), file.getAbsolutePath()).apply();
                                 updatePreference(fileName);
                             }
                         }

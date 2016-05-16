@@ -24,9 +24,7 @@
     <string name="command_nfc_list">nfc-list</string>
     <string name="command_stop_command">Stop command execution</string>
     <string name="title_activity_mfoc_settings">mfoc</string>
-    <string name="output_dump_file">Card dump output file</string>
-    <string name="input_dump_file">Card dump input file</string>
-    <string name="input_key_file">Key input file</string>
+    <string name="key_file">Key file</string>
     <string name="known_keys">Known keys</string>
     <string name="mfoc_probes">Number of probes per sector</string>
     <string name="pref_mfoc_probes_default">150</string>
@@ -61,4 +59,7 @@
     <string name="toast_save_failed">Failed to save to %s!</string>
     <string name="toast_open_failed">Failed to open %s!</string>
     <string name="toast_open_complete">Opened %s.</string>
+    <string name="card_dump">Card dump</string>
+    <string name="input_file">Input file</string>
+    <string name="output_file">Output file</string>
 </resources>

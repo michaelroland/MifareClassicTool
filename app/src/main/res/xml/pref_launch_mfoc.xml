@@ -30,19 +30,13 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/output_dump_file">
+        android:title="@string/card_dump">
 
         <Preference
-            android:key="mfoc_output_file_path"
+            android:key="mfoc_output_file"
             android:defaultValue=""
             android:selectAllOnFocus="true"
-            android:title="@string/file_path" />
-
-        <EditTextPreference
-            android:key="mfoc_output_file_name"
-            android:defaultValue=""
-            android:selectAllOnFocus="true"
-            android:title="@string/file_name" />
+            android:title="@string/output_file" />
 
     </PreferenceCategory>
 

@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void runMfoc() {
         try {
-            final File mfocTempFile = File.createTempFile("temp-mfoc", ".mfd", getFilesDir());
+            final File mfocTempFile = File.createTempFile("temp-mfoc-", ".mfd", getFilesDir());
 
             ArrayList<String> parameters = new ArrayList<>();
 
@@ -334,19 +334,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onProcessExit(int exitCode) {
                     if (exitCode == 0) {
                         File defaultOutputPath = getExternalFilesDir(null);
-                        String defaultOutputPathString;
                         if (defaultOutputPath != null) {
-                            defaultOutputPathString = defaultOutputPath.getAbsolutePath();
+                            defaultOutputPath = new File(defaultOutputPath, mfocTempFile.getName().replace("temp-", ""));
                         } else {
-                            defaultOutputPathString = mfocTempFile.getParentFile().getAbsolutePath();
+                            defaultOutputPath = mfocTempFile.getParentFile();
                         }
                         File outputFile = new File(
                                 PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(
-                                        "mfoc_output_file_path",
-                                        defaultOutputPathString),
-                                PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(
-                                        "mfoc_output_file_name",
-                                        mfocTempFile.getName().replace("temp-", "")));
+                                        "mfoc_output_file",
+                                        defaultOutputPath.getAbsolutePath()));
                         try {
                             FileUtils.moveFile(mfocTempFile, outputFile);
                         } catch (Exception e) {
@@ -373,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void runMfcuk() {
         try {
-            final File mfcukTempFile = File.createTempFile("temp-mfcuk", ".mfd", getFilesDir());
+            final File mfcukTempFile = File.createTempFile("temp-mfcuk-", ".mfd", getFilesDir());
 
             ArrayList<String> parameters = new ArrayList<>();
 
@@ -426,19 +422,15 @@ public class MainActivity extends AppCompatActivity {
                 public void onProcessExit(int exitCode) {
                     if (exitCode == 0) {
                         File defaultOutputPath = getExternalFilesDir(null);
-                        String defaultOutputPathString;
                         if (defaultOutputPath != null) {
-                            defaultOutputPathString = defaultOutputPath.getAbsolutePath();
+                            defaultOutputPath = new File(defaultOutputPath, mfcukTempFile.getName().replace("temp-", ""));
                         } else {
-                            defaultOutputPathString = mfcukTempFile.getParentFile().getAbsolutePath();
+                            defaultOutputPath = mfcukTempFile.getParentFile();
                         }
                         File outputFile = new File(
                                 PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(
                                         "mfcuk_output_file_path",
-                                        defaultOutputPathString),
-                                PreferenceManager.getDefaultSharedPreferences(MainActivity.this).getString(
-                                        "mfcuk_output_file_name",
-                                        mfcukTempFile.getName().replace("temp-", "")));
+                                        defaultOutputPath.getAbsolutePath()));
                         try {
                             FileUtils.moveFile(mfcukTempFile, outputFile);
                         } catch (Exception e) {
@@ -473,10 +465,11 @@ public class MainActivity extends AppCompatActivity {
                 defaultInputPathString = getFilesDir().getAbsolutePath();
             }
             File inputFile = new File(
-                    PreferenceManager.getDefaultSharedPreferences(this).getString("clone_input_file_path", defaultInputPathString),
-                    PreferenceManager.getDefaultSharedPreferences(this).getString("clone_input_file_name", ""));
+                    PreferenceManager.getDefaultSharedPreferences(this).getString(
+                            "clone_input_file",
+                            defaultInputPathString));
             if (inputFile.exists() && inputFile.isFile()) {
-                final File inputFileTemp = File.createTempFile("temp-dump", ".mfd", getFilesDir());
+                final File inputFileTemp = File.createTempFile("temp-dump-", ".mfd", getFilesDir());
                 FileUtils.copyFile(inputFile, inputFileTemp);
 
                 final File keyFileTemp;
@@ -490,16 +483,11 @@ public class MainActivity extends AppCompatActivity {
 
                     File keyFile = new File(
                             PreferenceManager.getDefaultSharedPreferences(this).getString(
-                                    "key_input_file_path",
+                                    "key_input_file",
                                     PreferenceManager.getDefaultSharedPreferences(this).getString(
-                                            "clone_input_file_path",
-                                            defaultInputPathString)),
-                            PreferenceManager.getDefaultSharedPreferences(this).getString(
-                                    "key_input_file_name",
-                                    PreferenceManager.getDefaultSharedPreferences(this).getString(
-                                            "clone_input_file_name",
-                                            "")));
-                    keyFileTemp = File.createTempFile("temp-keys", ".mfd", getFilesDir());
+                                            "clone_input_file",
+                                            defaultInputPathString)));
+                    keyFileTemp = File.createTempFile("temp-keys-", ".mfd", getFilesDir());
                     FileUtils.copyFile(keyFile, keyFileTemp);
 
                     parameters.add(keyFileTemp.getAbsolutePath());
